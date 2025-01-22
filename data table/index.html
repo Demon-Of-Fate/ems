@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Data Table</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        table, th, td {
+            border: 1px solid #ccc;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Simple Data Table</h1>
+    
+    <table id="dataTable">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Age</th>
+                <th>City</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Data rows will be added by JavaScript -->
+        </tbody>
+    </table>
+
+    <script>
+        // Data to populate the table
+        const data = [
+            { id: 1, name: 'Alice', age: 25, city: 'New York' },
+            { id: 2, name: 'Bob', age: 30, city: 'Los Angeles' },
+            { id: 3, name: 'Charlie', age: 28, city: 'Chicago' },
+            { id: 4, name: 'Diana', age: 22, city: 'Miami' }
+        ];
+
+        // Function to render the data into the table
+        function renderTable() {
+            const tableBody = document.querySelector('#dataTable tbody');
+            tableBody.innerHTML = ''; // Clear the table body before adding new rows
+
+            data.forEach(row => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${row.id}</td>
+                    <td>${row.name}</td>
+                    <td>${row.age}</td>
+                    <td>${row.city}</td>
+                `;
+                tableBody.appendChild(tr);
+            });
+        }
+
+        // Call renderTable to display the data when the page loads
+        document.addEventListener('DOMContentLoaded', renderTable);
+    </script>
+
+</body>
+</html>
