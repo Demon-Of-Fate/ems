@@ -5,13 +5,9 @@ include "../config/db.php";
 
 if($_SERVER['REQUEST_METHOD']=="POST"){
 
-
-
-    $emp_id = $_POST['emp_id'];
-    $emp_name = $_POST['emp_name'];
-    // $emp_id = 12;
+   
     
-    $sql= "SELECT * FROM `loan_payment` WHERE emp_id = $emp_id ";       
+    $sql= "SELECT * FROM `loan_payment` ";       
     $output ='';
    
     $result =  $conn->query($sql);
@@ -49,7 +45,7 @@ if($_SERVER['REQUEST_METHOD']=="POST"){
         
     }
     else{
-      $output .= "<p> There are no records of loan payment</p>";
+      $output .= "<p> no records </p>";
     echo $output;
     }
 }

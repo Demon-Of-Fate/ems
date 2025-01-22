@@ -23,7 +23,7 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
     $empid = $emp["empid"];
     $department = $emp['department'];
     $designation = $emp['designation'];
-    $email = $emp['emp_email'];
+    $contact = $emp['emp_phone_no'];
     $center = $emp['centre_id'];
 
 
@@ -33,7 +33,7 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
         "empid" => $empid,
         "department" => $department,
         "designation"=> $designation,
-        "email"=> $email,
+        "emp_phone_no" => $contact,
         "center"=> $center
     ];
     $json = json_encode($data);
