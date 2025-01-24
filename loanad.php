@@ -1,10 +1,7 @@
 <?php
 session_start();
-
-// Regular page load - include other files
-include 'header.php';
 require_once './config/db.php';
-
+include 'header.php'; 
 ?>
 
 <!DOCTYPE html>
@@ -13,12 +10,19 @@ require_once './config/db.php';
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Loan Advance Payment</title>
+    <!-- Move these above header.php include -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="./css/style1.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    
+    <!-- Scripts -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"></script>
-    <link rel="stylesheet" href="./css/style1.css">
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
     <style>
         /* Copy the styles from add_employee.php */
         .sidebar-menu {
@@ -124,78 +128,344 @@ input[type="text"]:read-only {
     padding: 10px 20px;
     font-weight: 500;
 }
+.select2-container .select2-selection--single {
+    height: 38px;
+    padding: 6px 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__arrow {
+    height: 36px;
+}.navbar-brand{
+            padding:22px;
+        }
+
+    /* Add these new styles */
+    .search-container {
+        display: flex;
+        align-items: flex-end;
+        gap: 10px;
+    }
+    
+    .search-wrapper {
+        flex-grow: 1;
+    }
+    
+    .search-btn {
+        height: 38px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-top: 5px;
+    }
+    
+    .search-icon {
+        margin-right: 5px;
+    }
+
+    .d-flex {
+        display: flex !important;
+    }
+
+    .align-items-center {
+        align-items: center !important;
+    }
+
+    .ml-2 {
+        margin-left: 0.5rem !important;
+    }
+
+    #showDetailsBtn {
+        white-space: nowrap;
+        height: 38px;
+    }
+
+    #loanDetails {
+        transition: all 0.3s ease-in-out;
+    }
+
+    .page-title {
+        display: block;
+        text-align: center;
+        font-size: 24px;
+        margin-bottom: 30px;
+        font-weight: bold;
+    }
+
+    .table-responsive {
+        overflow-x: auto;
+    }
+
+    .table {
+        width: 100%;
+        margin-bottom: 1rem;
+        background-color: transparent;
+    }
+
+    .table th,
+    .table td {
+        padding: 0.75rem;
+        vertical-align: middle;
+        border-top: 1px solid #dee2e6;
+    }
+
+    .table thead th {
+        vertical-align: bottom;
+        border-bottom: 2px solid #dee2e6;
+        background-color: var(--primary-color, #2c3e50);
+        color: white;
+    }
+
+    .table-striped tbody tr:nth-of-type(odd) {
+        background-color: rgba(0, 0, 0, 0.05);
+    }@media screen and (max-width: 1024px) {
+    .main-content {
+        margin-left: 0;
+        padding: 20px;
+    }
+    
+    .container {
+        padding: 15px;
+    }
+    
+    .form-grid {
+        grid-template-columns: 1fr 1fr; /* Keep 2 columns */
+        gap: 15px;
+    }
+}
+
+/* For tablets in portrait and larger phones */
+@media screen and (max-width: 768px) {
+    .form-grid {
+        grid-template-columns: 1fr; /* Switch to single column */
+    }
+    
+    .form-section {
+        padding: 20px;
+    }
+    
+    .page-title {
+        font-size: 20px;
+        margin-bottom: 20px;
+    }
+    
+    .search-container {
+        flex-direction: column;
+        gap: 5px;
+    }
+    
+    .search-btn {
+        width: 100%;
+        margin-top: 10px;
+    }
+    
+    .table-responsive {
+        margin: 0 -15px;
+    }
+    
+    .table th,
+    .table td {
+        padding: 0.5rem;
+        font-size: 14px;
+    }
+}
+
+/* For mobile phones */
+@media screen and (max-width: 480px) {
+    .container {
+        padding: 10px;
+    }
+    
+    .form-section {
+        padding: 15px;
+    }
+    
+    .page-title {
+        font-size: 18px;
+        margin-bottom: 15px;
+    }
+    
+    .form-group label {
+        font-size: 13px;
+    }
+    
+    .form-group input,
+    .form-group select {
+        padding: 8px;
+        font-size: 13px;
+    }
+    
+    .btn {
+        padding: 8px 16px;
+        font-size: 14px;
+    }
+    
+    .table th,
+    .table td {
+        padding: 0.4rem;
+        font-size: 13px;
+    }
+    
+    h3 {
+        font-size: 18px;
+    }
+    
+    .d-flex {
+        flex-direction: column;
+    }
+    
+    .ml-2 {
+        margin-left: 0 !important;
+        margin-top: 10px;
+    }
+    
+    #showDetailsBtn {
+        width: 100%;
+    }
+}
+
+/* For very small devices */
+@media screen and (max-width: 320px) {
+    .container {
+        padding: 5px;
+    }
+    
+    .form-section {
+        padding: 10px;
+    }
+    
+    .page-title {
+        font-size: 16px;
+    }
+    
+    .table th,
+    .table td {
+        padding: 0.3rem;
+        font-size: 12px;
+    }
+}
+
+/* Add these styles for the back button */
+.back-button {
+    position: fixed;
+    top: 20px;
+    right: 20px; /* Changed from left to right */
+    z-index: 1000;
+    transition: all 0.3s ease;
+}
+
+/* Media queries for back button positioning */
+@media screen and (max-width: 1024px) {
+    .back-button {
+        right: 20px; /* Keep consistent right spacing */
+        top: 15px;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .back-button {
+        right: 15px;
+        top: 15px;
+    }
+    
+    .back-button .btn {
+        padding: 6px 12px;
+        font-size: 14px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .back-button {
+        right: 10px;
+        top: 10px;
+    }
+    
+    .back-button .btn {
+        padding: 5px 10px;
+        font-size: 13px;
+    }
+}
+
+@media screen and (max-width: 320px) {
+    .back-button {
+        right: 5px;
+        top: 5px;
+    }
+    
+    .back-button .btn {
+        padding: 4px 8px;
+        font-size: 12px;
+    }
+}
     </style>
 </head>
 <body>
     <button class="menu-toggle" onclick="toggleSidebar()">☰</button>
-        <?php include('header.php'); ?>
     
-
     <?php include('backbtn.php'); ?>
 
     <div class="main-content">
         <div class="container">
-            <span>Loan Details</span>
+            <span class="page-title">New Loan</span>
             
             <!-- <form id="loanForm" class="employee-form"> -->
                 <div class="form-section">
                     <h3>Employee Information</h3>
                     <div class="form-grid">
-                    <div class="form-group position-relative">
-    <!-- <label for="employee_search">Search Employee Name</label> -->
-    <div class="input-group">
-        <!-- <input type="text" class="form-control" id="employee_search" placeholder="Type employee name or ID..."> -->
-        <label for="emp_designation">Employee*</label>
-            
-            <select name="" id="emp_name" required>
-            <option value="">Select Employee</option>
-            <?php
-        // Che$sql = "SELECT id, role_name FROM employee master";
-        $sql = "SELECT * FROM `employee_master`";
-        $result = $conn->query($sql);
-        if ($result->num_rows > 0) {
-            // Loop through the results and create options
-            while ($row = $result->fetch_assoc()) {
-                echo "<option value='" . $row['ename'] . "'>" . $row['ename'] . "</option>";
-            }
-        } else {
-            echo "<option value=''>No Employee available</option>";
-        }
-        ?>
-        </select>
-        <div class="input-group-append">
-            <button class="btn btn-primary" type="button" id="searchBtn">
-                Search
-            </button>
-        </div>
-    </div>
-    <div id="employeeList" class="employee-list"> </div>
-</div>
+                        <div class="form-group position-relative">
+                            <div class="search-container">
+                                <div class="search-wrapper">
+                                    <label for="emp_name">Employee*</label>
+                                    <select id="emp_name" class="form-control select2" required>
+                                        <option value="">Select Employee</option>
+                                        <?php
+                                        $sql = "SELECT * FROM employee_master";
+                                        $result = $conn->query($sql);
+                                        if ($result->num_rows > 0) {
+                                            while ($row = $result->fetch_assoc()) {
+                                                echo "<option value='" . $row['ename'] . "' data-empid='" . $row['empid'] . "'>" . $row['ename'] . "</option>";
+                                            }
+                                        } else {
+                                            echo "<option value=''>No Employee available</option>";
+                                        }
+                                        ?>
+                                    </select>
+                                </div>
+                                <button class="btn btn-primary search-btn" type="button" id="searchBtn">
+                                    <i class="fas fa-search search-icon"></i> Search
+                                </button>
+                            </div>
+                        </div>
                         
                         <div class="form-group">
-    <label for="emp_id">Employee id*</label>
-    <input type="text" id="emp_id" name="emp_id" class="form-control" readonly>
-</div>
+                            <label for="emp_designation">Designation*</label>
+                            <input type="text" id="emp_designation" name="emp_designation" class="form-control" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="emp_id">Employee id*</label>
+                            <input type="text" id="emp_id" name="emp_id" class="form-control" readonly>
+                        </div>
 
-<div class="form-group">
-    <label for="emp_designation">Designation*</label>
-    <input type="text" id="emp_designation" name="emp_designation" class="form-control" readonly>
-</div>
+                        <div class="form-group">
+                            <label for="emp_dept">Department*</label>
+                            <input type="text" id="emp_dept" name="emp_dept" class="form-control" readonly>
+                        </div>
 
-<div class="form-group">
-    <label for="emp_dept">Department*</label>
-    <input type="text" id="emp_dept" name="emp_dept" class="form-control" readonly>
-</div>
+                        <div class="form-group">
+                            <label for="center_id">Center ID</label>
+                            <input type="text" id="center_id" name="center_id" class="form-control" readonly>
+                        </div>
 
-<div class="form-group">
-    <label for="center_id">Center ID</label>
-    <input type="text" id="center_id" name="center_id" class="form-control" readonly>
-</div>
-
-<div class="form-group">
-    <label for="emp_email">Email*</label>
-    <input type="email" id="emp_email" name="emp_email" class="form-control" readonly>
-</div>
+                        <div class="form-group">
+                            <label for="emp_phone_no">Contact Number*</label>
+                            <div class="d-flex align-items-center">
+                                <input type="text" id="emp_phone_no" name="emp_phone_no" class="form-control" readonly>
+                                <button type="button" class="btn btn-primary ml-2" id="showDetailsBtn">
+                                    <i class="fas fa-arrow-down"></i> Show Details
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -205,180 +475,219 @@ input[type="text"]:read-only {
                 
         
     </div>
+    <div id="loanDetails" style="display: none;">
+        <div class="form-section mt-4">
+            <h3>Loan Details</h3>
+            <div class="form-grid">
+                <div class="form-group">
+                    <label for="loan_amount">Loan Amount*</label>
+                    <input type="number" id="loan_amount" name="loan_amount" class="form-control" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="num_of_emis">Number of EMIs*</label>
+                    <input type="number" id="num_of_emis" name="num_of_emis" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="emi_amount">EMI Amount*</label>
+                    <input type="number" id="emi_amount" name="emi_amount" class="form-control" readonly>
+                </div>
+
+                <div class="form-group">
+                    <label for="start_date">Start Date*</label>
+                    <input type="date" id="start_date" name="start_date" class="form-control" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="loan_balance">Loan Balance Amount</label>
+                    <input type="number" id="loan_balance" name="loan_balance" class="form-control" readonly>
+                </div>
+            </div>
+
+            <div class="text-right mt-4">
+                <button type="submit" class="btn btn-primary" id="saveLoanBtn">Save Loan Details</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- New Table Section -->
     <div class="form-section mt-4">
-    <h3>Loan Details</h3>
-    <div class="form-grid">
-        <div class="form-group">
-            <label for="loan_amount">Loan Amount*</label>
-            <input type="number" id="loan_amount" name="loan_amount" class="form-control" required>
-        </div>
-        
-     
-
-        <!-- <div class="form-group">
-            <label for="loan_status">Loan Status*</label>
-            <input type="text" id="loan_status" name="loan_status" class="form-control" required>
-        </div> -->
-
-        <div class="form-group">
-            <label for="loan_duration">Loan duration (in months)*</label>
-            <input type="number" id="loan_duration" name="loan_duration" class="form-control" required>
-        </div>
-
-        <div class="form-group">
-            <label for="emi_amount">EMI Amount*</label>
-            <input type="number" id="emi_amount" name="emi_amount" class="form-control" readonly>
-        </div>
-
-        <div class="form-group">
-            <label for="start_date">Start Date*</label>
-            <input type="date" id="start_date" name="start_date" class="form-control" required>
-        </div>
-
-        <div class="form-group">
-            <label for="loan_balance">Loan Balance Amount</label>
-            <input type="number" id="loan_balance" name="loan_balance" class="form-control" readonly>
+        <h3>Loan Records</h3>
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Employee ID</th>
+                        <th>Employee Name</th>
+                        <th>Loan Amount</th>
+                        <th>Number of EMIs</th>
+                        <th>Total Amount Paid</th>
+                        <th>Balance Amount</th>
+                        <th>Start Date</th>
+                    </tr>
+                </thead>
+                <tbody id = "loan-data">
+                    <tr>
+                        <td>EMP001</td>
+                        <td>John Doe</td>
+                        <td>50,000</td>
+                        <td>12</td>
+                        <td>20,000</td>
+                        <td>30,000</td>
+                        <td>2024-03-01</td>
+                    </tr>
+                    <tr>
+                        <td>EMP002</td>
+                        <td>Jane Smith</td>
+                        <td>75,000</td>
+                        <td>24</td>
+                        <td>15,000</td>
+                        <td>60,000</td>
+                        <td>2024-02-15</td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </div>
-
-    <div class="text-right mt-4">
-        <button type="submit" class="btn btn-primary" id="saveLoanBtn">Save Loan Details</button>
-    </div>
 </div>
-</div>
-    
+    <button class="theme-toggle" onclick="toggleTheme()">🌓</button>
 
     <!-- Keep existing JavaScript, but add theme toggle and sidebar functions -->
-    <script>
-        // ... existing JavaScript ...
-
-        // Add these functions from add_employee.php
-       
-
-        
- $(document).ready(function(){
-    // Cache jQuery selectors for better performance
-    const $loanAmount = $('#loan_amount');
-    const $numEmis = $('#num_of_emis');
-    const $emiAmount = $('#emi_amount');
-    const $loanBalance = $('#loan_balance');
-
-    // // Calculate EMI amount function
-    function calculateEMI() {
-        const loanAmount = parseFloat($loanAmount.val()) || 0;
-        const numEmis = parseInt($numEmis.val()) || 1;
-        
-         // Simple EMI calculation (loan amount divided by number of EMIs)
-        const emiAmount = loanAmount / numEmis;
-        $emiAmount.val(emiAmount.toFixed(2));
-        $loanBalance.val(loanAmount.toFixed(2));
-    }
-
-     // Attach input event handlers using jQuery
-    $loanAmount.on('input', calculateEMI);
-    $numEmis.on('input', calculateEMI);
-    
-
-    //submit the name of employee
-    $("#searchBtn").on("click", function(){
-        // alert("he")
-        let emp = $("#emp_name").val();
-        
-        $.ajax({
-            url : "./backend/emp-data.php",
-            type: "POST",
-            // dataType:"JSON",
-            data: {empname : emp},
-            success: function(data){
-                
-                if(data.success == true){
-                   let center = data.center;
-                   let id = data.empid;
-                   let designation = data.designation;
-                   let dept =data.department;
-                   let email = data.email;
-
-                    $("#emp_id").val(id);
-                    $("#emp_designation").val(designation);
-                    $("#emp_dept").val(dept);
-                    $("#center_id").val(center);
-                    $("#emp_email").val(email);
-                }
-                
-                else{
-                    alert(data.message || "an error occured");
-                }
-            }
-        });
-    });
-
-
-
-
-    // Handle form submission
-    $('#saveLoanBtn').on('click', function(e) {
-        
-        
-      
-        let emp_id = $("#emp_id").val();
-        let loanAmount = $("#loan_amount").val();
-        let loan_status = $("#loan_status").val();
-        let loan_duration = $("#loan_duration").val();
-        let loan_bal_amount = $("#loan_balance").val();
-        let start_date = $("#start_date").val();
-        let emi = $("#num_of_emis").val();
-        let emi_amount = $("#emi_amount").val();
-
-        // alert("hello");
-
-        $.ajax({
-            url: "./backend/add-loan.php",
-            type: "POST",
-            datatype: "json",
-            data: { 
-                empid : emp_id,
-                loan_amount :loanAmount,
-                loan_status :loan_status,
-                loan_duration :loan_duration,
-                loan_bal_amount :loan_bal_amount,
-                start_date :start_date,
-                no_of_emi : emi,
-                emi_amount :emi_amount
-                
-                
-            },
-            success: function(response) {
-            if (response.success) {
-                alert(response.message);
-                // Optionally reset form or redirect
-
-                //reset the input fields 
-                $("#emp_id").val('');
-                $("#emp_designation").val('');
-                $("#emp_dept").val('');
-                $("#center_id").val('');
-                $("#emp_email").val('');
-                $("#num_of_emis").val('');
-                $("#loan_amount").val('');
-                $("#loan_status").val('');
-                $("#loan_duration").val('');
-                $("#emi_amount").val('');
-                $("#start_date").val('');
-                $("#loan_balance").val('');
-                
-                // window.location.reload();
-            } else {
-                alert(response.message || "An error occurred");
-            }
-        },
-        error: function(xhr, status, error) {
-            console.error("AJAX Error:", status, error);
-            alert("An error occurred while saving the loan details");
+     <script>
+    $(document).ready(function() {
+        // Initialize the loan submenu state on page load
+        const currentPage = '<?php echo basename($_SERVER['PHP_SELF']); ?>';
+        if (currentPage === 'loanad.php' || currentPage === 'loanpayment.php') {
+            $('#loanSubmenu').show();
+            $('a[onclick*="loanSubmenu"]').parent().addClass('submenu-open');
         }
+
+        // Sidebar toggle function
+        $('#sidebarToggleBtn').click(function() {
+            $('.sidebar').toggleClass('active');
+        });
+
+        //function for load loan data
+        function loanData(){
+            $.ajax({
+                url: "./backend/list-loan.php",
+                type: "POST",
+                success: function(response){
+                    if(response){
+                        $("#loan-data").html(response);
+ 
+                    }
+                    else{
+                        alert("Sorry something went wrong");
+                    }
+
+                }
+
+            });
+        }
+        loanData();
+
+        
+
+        // Loan EMI calculation
+        function calculateEMI() {
+            const loanAmount = parseFloat($('#loan_amount').val()) || 0;
+            const numEmis = parseInt($('#num_of_emis').val()) || 1;
+            const emiAmount = loanAmount / numEmis;
+            $('#emi_amount').val(emiAmount.toFixed(2));
+            $('#loan_balance').val(loanAmount.toFixed(2));
+        }
+
+        // Listen for input changes and recalculate EMI
+        $('#loan_amount, #num_of_emis').on('input', calculateEMI);
+
+        
+        // Handle employee search with AJAX
+        $('#searchBtn').click(function() {
+            const emp = $('#emp_name').val();
+
+            $.ajax({
+                url: './backend/emp-data.php',
+                type: 'POST',
+                data: { empname: emp },
+                dataType: 'json',
+                success: function(data) {
+                    if (data.success) {
+                        const { center, empid, designation, department, emp_phone_no } = data;
+                        $('#emp_id').val(empid);
+                        $('#emp_designation').val(designation);
+                        $('#emp_dept').val(department);
+                        $('#center_id').val(center);
+                        $('#emp_phone_no').val(emp_phone_no);
+
+                        
+                        // loan_history(); // Assuming this function is defined elsewhere
+                    } else {
+                        alert(data.message);
+                    }
+                }
+            });
+        });
+
+
+        // Handle loan form submission
+        $('#saveLoanBtn').click(function(e) {
+            e.preventDefault();
             
+            // Get form data
+            const formData = {
+                employee_id: $('#emp_id').val(),
+                loan_amount: $('#loan_amount').val(),
+                num_of_emis: $('#num_of_emis').val(),
+                emi_amount: $('#emi_amount').val(),
+                start_date: $('#start_date').val(),
+                loan_balance: $('#loan_balance').val()
+            };
+
+            // Validate form data
+            if (!formData.employee_id || !formData.loan_amount || !formData.num_of_emis || !formData.start_date) {
+                alert('Please fill all required fields');
+                return;
+            }
+
+            // Log form data (this is where you'd send data to your server)
+            $.ajax({
+                url: './backend/add-loan.php',
+                type: 'POST',
+                data: formData,
+                dataType: 'json',
+                success: function(data) {
+                    if (data.success == true) {
+                        alert(data.message)
+
+                        
+                        // loan_history(); // Assuming this function is defined elsewhere
+                    } else {
+                        alert(data.message);
+                    }
+                }
+            });
+        
+        });
+
+        // Handle showing and hiding loan details
+        $('#showDetailsBtn').click(function() {
+            const $btn = $(this);
+            const $loanDetails = $('#loanDetails');
+
+            $loanDetails.slideToggle(); // Toggles visibility of loan details
+            if ($loanDetails.is(':visible')) {
+                $btn.html('<i class="fas fa-arrow-up"></i> Hide Loan Details');
+            } else {
+                $btn.html('<i class="fas fa-arrow-down"></i> Show Loan Details');
+            }
+        });
+
+        // Optional: Add theme toggle (light/dark mode)
+        $('#themeToggleBtn').click(function() {
+            $('body').toggleClass('dark-theme');
         });
     });
-});
-    </script>
+</script>
 </body>
 </html>
